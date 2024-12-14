@@ -1,0 +1,36 @@
+# Import required libraries
+from skimage import exposure
+
+# Increase contrast by a factor of 1.5
+def increase_contrast(img, level):
+    # Ensure pixel values are in range [0, 1] for processing
+    img_normalized = img / 255.0
+    
+    # Apply contrast adjustment
+    img_contrast = exposure.rescale_intensity(img_normalized, in_range=(0.5 - 0.5 / level, 0.5 + 0.5 / level))
+    
+    # Scale back to [0, 255]
+    img_contrast = (img_contrast * 255).astype(np.uint8)
+    
+    return img_contrast
+
+# Apply contrast increase
+img_contrast = increase_contrast(img_gray, 1.5)
+
+# Display original and contrast-enhanced images
+plt.figure(figsize=(12, 6))
+
+# Plot original image
+plt.subplot(1, 2, 1)
+plt.imshow(img_gray, cmap='gray')
+plt.title('Original Image')
+plt.axis('off')
+
+# Plot contrast-enhanced image
+plt.subplot(1, 2, 2)
+plt.imshow(img_contrast, cmap='gray')
+plt.title('Contrast Enhanced Image (Level 1.5)')
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
